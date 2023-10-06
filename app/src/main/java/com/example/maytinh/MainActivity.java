@@ -55,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
                         result = firstNumber / secondNumber;
                     } else {
                         // Handle division by zero error
+                        // Xử lý khi chia cho 0
+                        currentInput = "Infinity";
+                        updateResult();
+                        return;
                     }
                     break;
             }
