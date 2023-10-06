@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     if (secondNumber != 0) {
                         result = firstNumber / secondNumber;
                     } else {
-                        // Xử lý khi chia cho 0
+                        // handler with operator /  0
                         currentInput = "Infinity";
                         updateResult();
                         return;
