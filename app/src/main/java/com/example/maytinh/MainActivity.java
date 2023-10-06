@@ -69,7 +69,14 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            currentInput = String.valueOf(result);
+            int integerResult = (int) result;
+
+            if (!Double.isInfinite(result)) {
+                currentInput = String.valueOf(result);
+            }
+
+            currentInput = String.valueOf(integerResult);
+
             updateResult();
         }
     }
