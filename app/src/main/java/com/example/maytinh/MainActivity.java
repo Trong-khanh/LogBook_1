@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentInput = "";
     private double firstNumber = 0;
     private char operator = ' ';
+    private TextView operationTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         resultEditText = findViewById(R.id.resultEditText);
+        operationTextView = findViewById(R.id.operationTextView);
     }
 
     public void onNumberClick(View view) {
@@ -31,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
         if (!currentInput.isEmpty()) {
             firstNumber = Double.parseDouble(currentInput);
             operator = ((Button) view).getText().toString().charAt(0);
+
+            // update textview with operator
+            operationTextView.setText(currentInput + " " + operator);
+
             currentInput = "";
         }
     }
@@ -54,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
                     if (secondNumber != 0) {
                         result = firstNumber / secondNumber;
                     } else {
-                        // Handle division by zero error
                         // Xử lý khi chia cho 0
                         currentInput = "Infinity";
                         updateResult();
@@ -69,9 +75,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClearClick(View view) {
-        currentInput = ""; // Xóa giá trị hiện tại
-        firstNumber = 0; // Đặt lại số đầu tiên
-        operator = ' '; // Đặt lại phép tính
+        currentInput = ""; // delete value
+        firstNumber = 0; // set FirstNumber
+        operator = ' '; // set operator
+
+        // delete content TextView
+        operationTextView.setText("");
+
         updateResult();
     }
 

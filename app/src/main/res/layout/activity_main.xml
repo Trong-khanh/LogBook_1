@@ -9,6 +9,17 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/operationTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@android:color/darker_gray"
+        android:gravity="end"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+
     <EditText
         android:id="@+id/resultEditText"
         android:layout_width="match_parent"
