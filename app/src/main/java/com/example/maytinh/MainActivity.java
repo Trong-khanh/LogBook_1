@@ -1,5 +1,6 @@
 package com.example.maytinh;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,11 @@ public class MainActivity extends AppCompatActivity {
     private double firstNumber = 0;
     private char operator = ' ';
     private TextView operationTextView;
+    private String currentExpression = "";
+    private boolean cleared = false;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,23 +33,43 @@ public class MainActivity extends AppCompatActivity {
     public void onNumberClick(View view) {
         String buttonText = ((Button) view).getText().toString();
         currentInput += buttonText;
+        currentExpression += buttonText; // add number to operator
         updateResult();
+
+        if (cleared && currentInput.isEmpty()) {
+            // show message error
+            new AlertDialog.Builder(this)
+                    .setTitle("Error")
+                    .setMessage("Please enter the expression before calculating.")
+                    .setPositiveButton("OK", null)
+                    .show();
+            cleared = false; // Reset cleared to false to allow new expressions to be entered
+        }
     }
+
 
     public void onOperatorClick(View view) {
         if (!currentInput.isEmpty()) {
             firstNumber = Double.parseDouble(currentInput);
             operator = ((Button) view).getText().toString().charAt(0);
 
-            // update textview with operator
-            operationTextView.setText(currentInput + " " + operator);
+            // update with operator
+            currentExpression += " " + operator + " ";
+            operationTextView.setText(currentExpression);
 
             currentInput = "";
         }
     }
 
     public void onEqualsClick(View view) {
-        if (!currentInput.isEmpty()) {
+        if (currentInput.isEmpty() && currentExpression.isEmpty()) {
+            // show message error
+            new AlertDialog.Builder(this)
+                    .setTitle("Error")
+                    .setMessage("Please enter the expression before calculating.")
+                    .setPositiveButton("OK", null)
+                    .show();
+        } else if (!currentInput.isEmpty() && operator != ' ') {
             double secondNumber = Double.parseDouble(currentInput);
             double result = 0;
 
@@ -61,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     if (secondNumber != 0) {
                         result = firstNumber / secondNumber;
                     } else {
-                        // handler with operator /  0
+                        // handler even / 0
                         currentInput = "Infinity";
                         updateResult();
                         return;
@@ -69,17 +95,18 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            int integerResult = (int) result;
+            // round the result
+            long roundedResult = Math.round(result);
+            currentInput = String.valueOf(roundedResult);
 
-            if (!Double.isInfinite(result)) {
-                currentInput = String.valueOf(result);
-            }
-
-            currentInput = String.valueOf(integerResult);
+            // update result
+            currentExpression += " = " + currentInput;
+            operationTextView.setText(currentExpression);
 
             updateResult();
         }
     }
+
 
     public void onClearClick(View view) {
         currentInput = ""; // delete value
@@ -89,8 +116,11 @@ public class MainActivity extends AppCompatActivity {
         // delete content TextView
         operationTextView.setText("");
 
+        cleared = true; // deleted old result
+
         updateResult();
     }
+
 
     private void updateResult() {
         resultEditText.setText(currentInput);
