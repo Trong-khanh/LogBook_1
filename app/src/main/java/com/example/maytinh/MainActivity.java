@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         operationTextView.setText("");
 
         cleared = true; // deleted old result
-
+        currentExpression = "";
         updateResult();
     }
 
